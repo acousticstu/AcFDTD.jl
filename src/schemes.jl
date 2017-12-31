@@ -2,9 +2,9 @@ export IISO,
        SLF,
        IWB
        
-abstract FDTDScheme 
+abstract type FDTDScheme end 
 
-immutable IISO <: FDTDScheme
+struct IISO <: FDTDScheme
 	λ::Float64              # Courant number
 	a::Float64              # scheme parameter a
 	b::Float64              # scheme parameter b
@@ -13,7 +13,7 @@ immutable IISO <: FDTDScheme
 	IISO() = new(sqrt(3/4), 1/6, 0., 0., "Interp. Isotropic (IISO)")
 end
 
-immutable SLF <: FDTDScheme
+struct SLF <: FDTDScheme
 	λ::Float64              # Courant number
 	a::Float64              # scheme parameter a
 	b::Float64              # scheme parameter b
@@ -22,7 +22,7 @@ immutable SLF <: FDTDScheme
 	SLF() = new(sqrt(1/3), 0., 0., 0., "Standard Leapfrog Scheme (SLF)")
 end
 
-immutable IWB <: FDTDScheme
+struct IWB <: FDTDScheme
 	λ::Float64              # Courant number
 	a::Float64              # scheme parameter a
 	b::Float64              # scheme parameter b

@@ -1,18 +1,18 @@
 # with xr and xs
-function fdtdKernel!{T}(n::Int,
-		     p_out::Array{T}, 
-		     p0::Array{T,3}, 
-		     p1::Array{T,3}, 
-		     p2::Array{T,3}, 
-		     xr::Vector{Tuple{Int,Int,Int}}, 
-		     xs::Vector{Tuple{Int,Int,Int}}, 
-		     s::Array{T}, 
-		     d1::T, 
-		     d2::T, 
-		     d3::T, 
-		     d4::T, 
-		     q::Vector{T}, 
-		     G::Array{UInt8,3} )
+function fdtdKernel!(n::Int,
+ 	     p_out::Array{T}, 
+ 	     p0::Array{T,3}, 
+ 	     p1::Array{T,3}, 
+ 	     p2::Array{T,3}, 
+ 	     xr::Vector{Tuple{Int,Int,Int}}, 
+ 	     xs::Vector{Tuple{Int,Int,Int}}, 
+ 	     s::Array{T}, 
+ 	     d1::T, 
+ 	     d2::T, 
+ 	     d3::T, 
+ 	     d4::T, 
+ 	     q::Vector{T}, 
+ 	     G::Array{UInt8,3} ) where T
 	for i = 1:size(p0,3), m = 1:size(p0,2), l = 1:size(p0,1)
 		if G[l,m,i] == 0x01
 			air!(l,m,i,d1,d2,d3,d4,p0,p1,p2)
@@ -93,19 +93,19 @@ function fdtdKernel!{T}(n::Int,
 end
 		
 # full and xs
-function fdtdKernel!{T}(n::Int,
-		     p_out::Array{T,4}, #full output 
-		     p0::Array{T,3}, 
-		     p1::Array{T,3}, 
-		     p2::Array{T,3}, 
-		     xs::Vector{Tuple{Int,Int,Int}}, 
-		     s::Array{T}, 
-		     d1::T, 
-		     d2::T, 
-		     d3::T, 
-		     d4::T, 
-		     q::Vector{T}, 
-		     G::Array{UInt8,3} )
+function fdtdKernel!(n::Int,
+ 	     p_out::Array{T,4}, #full output 
+ 	     p0::Array{T,3}, 
+ 	     p1::Array{T,3}, 
+ 	     p2::Array{T,3}, 
+ 	     xs::Vector{Tuple{Int,Int,Int}}, 
+ 	     s::Array{T}, 
+ 	     d1::T, 
+ 	     d2::T, 
+ 	     d3::T, 
+ 	     d4::T, 
+ 	     q::Vector{T}, 
+ 	     G::Array{UInt8,3} ) where T
 	for i = 1:size(p0,3), m = 1:size(p0,2), l = 1:size(p0,1) 
 		if G[l,m,i] == 0x01
 			air!(l,m,i,d1,d2,d3,d4,p0,p1,p2)
@@ -182,19 +182,19 @@ function fdtdKernel!{T}(n::Int,
 end
 
 # xr and full s
-function fdtdKernel!{T}(n::Int,
-		     p_out::Array{T}, 
-		     p0::Array{T,3}, 
-		     p1::Array{T,3}, 
-		     p2::Array{T,3}, 
-		     xr::Vector{Tuple{Int,Int,Int}}, 
-		     s::Array{T,4}, 
-		     d1::T, 
-		     d2::T, 
-		     d3::T, 
-		     d4::T, 
-		     q::Vector{T}, 
-		     G::Array{UInt8,3} )
+function fdtdKernel!(n::Int,
+ 	     p_out::Array{T}, 
+ 	     p0::Array{T,3}, 
+ 	     p1::Array{T,3}, 
+ 	     p2::Array{T,3}, 
+ 	     xr::Vector{Tuple{Int,Int,Int}}, 
+ 	     s::Array{T,4}, 
+ 	     d1::T, 
+ 	     d2::T, 
+ 	     d3::T, 
+ 	     d4::T, 
+ 	     q::Vector{T}, 
+ 	     G::Array{UInt8,3} ) where T
 	for i = 1:size(p0,3), m = 1:size(p0,2), l = 1:size(p0,1)
 		if G[l,m,i] == 0x01
 			air!(n,l,m,i,d1,d2,d3,d4,p0,p1,p2,s)
@@ -269,18 +269,18 @@ function fdtdKernel!{T}(n::Int,
 end
 
 # full p and full s
-function fdtdKernel!{T}(n::Int,
-		     p_out::Array{T,4}, #full output 
-		     p0::Array{T,3}, 
-		     p1::Array{T,3}, 
-		     p2::Array{T,3}, 
-		     s::Array{T,4}, 
-		     d1::T, 
-		     d2::T, 
-		     d3::T, 
-		     d4::T, 
-		     q::Vector{T}, 
-		     G::Array{UInt8,3} )
+function fdtdKernel!(n::Int,
+ 	     p_out::Array{T,4}, #full output 
+ 	     p0::Array{T,3}, 
+ 	     p1::Array{T,3}, 
+ 	     p2::Array{T,3}, 
+ 	     s::Array{T,4}, 
+ 	     d1::T, 
+ 	     d2::T, 
+ 	     d3::T, 
+ 	     d4::T, 
+ 	     q::Vector{T}, 
+ 	     G::Array{UInt8,3} ) where T
 	for i = 1:size(p0,3), m = 1:size(p0,2), l = 1:size(p0,1) 
 		if G[l,m,i] == 0x01
 			air!(n,l,m,i,d1,d2,d3,d4,p0,p1,p2,s)

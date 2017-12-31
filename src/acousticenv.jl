@@ -1,10 +1,10 @@
 export FDTDEnv
 
-abstract Acoustics
-abstract AcousticEnvironment <:Acoustics
-abstract FDTDAcousticEnvironment <: AcousticEnvironment
+abstract type Acoustics end
+abstract type AcousticEnvironment <:Acoustics end
+abstract type FDTDAcousticEnvironment <: AcousticEnvironment end
 
-immutable FDTDEnv <: FDTDAcousticEnvironment
+struct FDTDEnv <: FDTDAcousticEnvironment
 	Fs::Float64        # sampling frequency
 	c::Float64         # speed of sound
 	X::Float64         # spatial step

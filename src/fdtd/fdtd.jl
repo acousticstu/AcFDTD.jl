@@ -1,6 +1,6 @@
 export FDTD, fdtd, fdtd!
 
-immutable FDTD{T,N}
+struct FDTD{T,N}
 	p0::Array{T,N}
 	p1::Array{T,N}
 	p2::Array{T,N}
@@ -9,7 +9,7 @@ immutable FDTD{T,N}
 	G::Array{UInt8,3}     
 	env::FDTDEnv
 
-	function FDTD(p0,p1,p2,geo)
+	function FDTD{T,N}(p0,p1,p2,geo) where {T,N}
 		a,b,c,λ = geo.env.scheme.a, geo.env.scheme.b, geo.env.scheme.c, geo.env.scheme.λ
 		d = (λ^2*(1-4*a+4*b), 
       		     λ^2*(a-2*b),
@@ -20,7 +20,7 @@ immutable FDTD{T,N}
 	end
 
 
-	FDTD(p0,p1,p2,d,q,G,env) = new(p0,p1,p2,d,q,G,env) 
+	FDTD{T,N}(p0,p1,p2,d,q,G,env) where {T,N} = new(p0,p1,p2,d,q,G,env) 
 	
 end
 
@@ -40,12 +40,12 @@ end
 
 FDTD(geo::AbstractGeometry) = FDTD(Float64, geo)
 
-function setIC!{T,N}(f::FDTD{T,N},p0::Array{T,N},p1::Array{T,N})
+function setIC!(f::FDTD{T,N},p0::Array{T,N},p1::Array{T,N}) where {T,N}
 	f.p0 .= p0
 	f.p1 .= p1
 end
 
-function resetIC!{T,N}(f::FDTD{T,N})
+function resetIC!(f::FDTD{T,N}) where {T,N}
 	f.p0 .= 0.0
 	f.p1 .= 0.0
 end
@@ -76,15 +76,15 @@ fdtd([xs], args...)
     * otherwise `p` will be an `Array` os size `(size(geo)...,Nt)`
 
 """
-function fdtd{T}(xr::Vector{Tuple{Int,Int,Int}}, xs::Vector{Tuple{Int,Int,Int}}, Nt::Int,
-		 geo::AbstractGeometry,
-		 s::Array{T}) 
+function fdtd(xr::Vector{Tuple{Int,Int,Int}}, xs::Vector{Tuple{Int,Int,Int}}, Nt::Int,
+ 	 geo::AbstractGeometry,
+ 	 s::Array{T}) where T 
 	f = FDTD(eltype(s),geo) 
 	return fdtd(xr,xs,Nt,f,s)
 end
 
-function fdtd{T}(xr::Vector{Tuple{Int,Int,Int}}, xs::Vector{Tuple{Int,Int,Int}}, Nt::Int, 
-		 f::FDTD{T,3}, s::Array{T}) 
+function fdtd(xr::Vector{Tuple{Int,Int,Int}}, xs::Vector{Tuple{Int,Int,Int}}, Nt::Int, 
+ 	 f::FDTD{T,3}, s::Array{T}) where T 
 	size(s,2) != length(xs) && throw(ArgumentError("size(s,2) must be equal to length(xs)")) 
 
 	#initialize output
@@ -99,9 +99,9 @@ end
 
 In-place version of `fdtd` overwrites the `Array` `p`. See `fdtd` for more details.	
 """
-function fdtd!{T}(p_out::Array{T},
-		  xr::Vector{Tuple{Int,Int,Int}}, xs::Vector{Tuple{Int,Int,Int}},Nt::Int,
-		  f::FDTD{T,3}, s::Array{T}) 
+function fdtd!(p_out::Array{T},
+ 	  xr::Vector{Tuple{Int,Int,Int}}, xs::Vector{Tuple{Int,Int,Int}},Nt::Int,
+ 	  f::FDTD{T,3}, s::Array{T}) where T 
 	resetIC!(f)
 	p2 = f.p2
 	p1 = f.p1
@@ -114,15 +114,15 @@ function fdtd!{T}(p_out::Array{T},
 end
 
 ## full with xr, null IC 
-function fdtd{T}(xs::Vector{Tuple{Int,Int,Int}}, Nt::Int,
-		 geo::AbstractGeometry,
-		 s::Array{T}) 
+function fdtd(xs::Vector{Tuple{Int,Int,Int}}, Nt::Int,
+ 	 geo::AbstractGeometry,
+ 	 s::Array{T}) where T 
 	f = FDTD(eltype(s),geo) 
 	return fdtd(xs,Nt,f,s)
 end
 
-function fdtd{T}(xs::Vector{Tuple{Int,Int,Int}}, Nt::Int, 
-		 f::FDTD{T,3}, s::Array{T}) 
+function fdtd(xs::Vector{Tuple{Int,Int,Int}}, Nt::Int, 
+ 	 f::FDTD{T,3}, s::Array{T}) where T 
 	size(s,2) != length(xs) && throw(ArgumentError("size(s,2) must be equal to length(xs)")) 
 
 	#initialize output
@@ -131,9 +131,9 @@ function fdtd{T}(xs::Vector{Tuple{Int,Int,Int}}, Nt::Int,
 	return p_out
 end
 
-function fdtd!{T}(p_out::Array{T,4},
-		  xs::Vector{Tuple{Int,Int,Int}},Nt::Int,
-		  f::FDTD{T,3}, s::Array{T}) 
+function fdtd!(p_out::Array{T,4},
+ 	  xs::Vector{Tuple{Int,Int,Int}},Nt::Int,
+ 	  f::FDTD{T,3}, s::Array{T}) where T 
 	resetIC!(f)
 	p2 = f.p2
 	p1 = f.p1
@@ -146,15 +146,15 @@ function fdtd!{T}(p_out::Array{T,4},
 end
 
 ## xr with source everywhere, null IC 
-function fdtd{T}(xr::Vector{Tuple{Int,Int,Int}},Nt::Int,
-		 geo::AbstractGeometry,
-		 s::Array{T,4}) 
+function fdtd(xr::Vector{Tuple{Int,Int,Int}},Nt::Int,
+ 	 geo::AbstractGeometry,
+ 	 s::Array{T,4}) where T 
 	f = FDTD(eltype(s),geo) 
 	return fdtd(xr,Nt,f,s)
 end
 
-function fdtd{T}(xr::Vector{Tuple{Int,Int,Int}},Nt::Int, 
-		 f::FDTD{T,3}, s::Array{T,4}) 
+function fdtd(xr::Vector{Tuple{Int,Int,Int}},Nt::Int, 
+ 	 f::FDTD{T,3}, s::Array{T,4}) where T 
 
 	#initialize output
 	p_out = Array{T}(Nt,length(xr))
@@ -162,9 +162,9 @@ function fdtd{T}(xr::Vector{Tuple{Int,Int,Int}},Nt::Int,
 	return p_out
 end
 
-function fdtd!{T}(p_out::Array{T},
-		  xr::Vector{Tuple{Int,Int,Int}}, Nt::Int,
-		  f::FDTD{T,3}, s::Array{T,4}) 
+function fdtd!(p_out::Array{T},
+ 	  xr::Vector{Tuple{Int,Int,Int}}, Nt::Int,
+ 	  f::FDTD{T,3}, s::Array{T,4}) where T 
 	resetIC!(f)
 	p2 = f.p2
 	p1 = f.p1
@@ -178,15 +178,15 @@ end
 
 
 ## full with source everywhere, null IC 
-function fdtd{T}(Nt::Int,
-		 geo::AbstractGeometry,
-		 s::Array{T,4}) 
+function fdtd(Nt::Int,
+ 	 geo::AbstractGeometry,
+ 	 s::Array{T,4}) where T 
 	f = FDTD(eltype(s),geo) 
 	return fdtd(Nt,f,s)
 end
 
-function fdtd{T}(Nt::Int, 
-		 f::FDTD{T,3}, s::Array{T,4}) 
+function fdtd(Nt::Int, 
+ 	 f::FDTD{T,3}, s::Array{T,4}) where T 
 
 	#initialize output
 	p_out = Array{T}(size(f.p0)...,Nt)
@@ -194,9 +194,9 @@ function fdtd{T}(Nt::Int,
 	return p_out
 end
 
-function fdtd!{T}(p_out::Array{T,4},
-		  Nt::Int,
-		  f::FDTD{T,3}, s::Array{T,4}) 
+function fdtd!(p_out::Array{T,4},
+ 	  Nt::Int,
+ 	  f::FDTD{T,3}, s::Array{T,4}) where T 
 	resetIC!(f)
 	p2 = f.p2
 	p1 = f.p1
@@ -211,17 +211,17 @@ end
 
 ## xr and xs with IC 
 
-function fdtd{T}(xr::Vector{Tuple{Int,Int,Int}}, xs::Vector{Tuple{Int,Int,Int}}, Nt::Int,
-		 geo::AbstractGeometry,
-		 s::Array{T},
-		 p0ic::Array{T,3}, p1ic::Array{T,3}) 
+function fdtd(xr::Vector{Tuple{Int,Int,Int}}, xs::Vector{Tuple{Int,Int,Int}}, Nt::Int,
+ 	 geo::AbstractGeometry,
+ 	 s::Array{T},
+ 	 p0ic::Array{T,3}, p1ic::Array{T,3}) where T 
 	f = FDTD(eltype(s),geo) 
 	return fdtd(xr,xs,Nt,f,s,p0ic,p1ic)
 end
 
-function fdtd{T}(xr::Vector{Tuple{Int,Int,Int}}, xs::Vector{Tuple{Int,Int,Int}}, Nt::Int, 
-		 f::FDTD{T,3}, s::Array{T}, 
-		 p0ic::Array{T,3}, p1ic::Array{T,3}) 
+function fdtd(xr::Vector{Tuple{Int,Int,Int}}, xs::Vector{Tuple{Int,Int,Int}}, Nt::Int, 
+ 	 f::FDTD{T,3}, s::Array{T}, 
+ 	 p0ic::Array{T,3}, p1ic::Array{T,3}) where T 
 	size(s,2) != length(xs) && throw(ArgumentError("size(s,2) must be equal to length(xs)")) 
 
 	#initialize output
@@ -230,10 +230,10 @@ function fdtd{T}(xr::Vector{Tuple{Int,Int,Int}}, xs::Vector{Tuple{Int,Int,Int}},
 	return p_out
 end
 
-function fdtd!{T}(p_out::Array{T},
-		  xr::Vector{Tuple{Int,Int,Int}}, xs::Vector{Tuple{Int,Int,Int}},Nt::Int,
-		  f::FDTD{T,3}, s::Array{T}, 
-		  p0ic::Array{T,3}, p1ic::Array{T,3}) 
+function fdtd!(p_out::Array{T},
+ 	  xr::Vector{Tuple{Int,Int,Int}}, xs::Vector{Tuple{Int,Int,Int}},Nt::Int,
+ 	  f::FDTD{T,3}, s::Array{T}, 
+ 	  p0ic::Array{T,3}, p1ic::Array{T,3}) where T 
 	setIC!(f,p0ic,p1ic)
 	p2 = f.p2
 	p1 = f.p1
@@ -247,17 +247,17 @@ end
 
 
 #full soundfield & IC
-function fdtd{T}(xs::Vector{Tuple{Int,Int,Int}}, Nt::Int,
-		 geo::AbstractGeometry,
-		 s::Array{T},
-		 p0ic::Array{T,3}, p1ic::Array{T,3}) 
+function fdtd(xs::Vector{Tuple{Int,Int,Int}}, Nt::Int,
+ 	 geo::AbstractGeometry,
+ 	 s::Array{T},
+ 	 p0ic::Array{T,3}, p1ic::Array{T,3}) where T 
 	f = FDTD(eltype(s),geo) 
 	return fdtd(xs,Nt,f,s,p0ic,p1ic)
 end
 
-function fdtd{T}(xs::Vector{Tuple{Int,Int,Int}}, Nt::Int, 
-		 f::FDTD{T,3}, s::Array{T}, 
-		 p0ic::Array{T,3}, p1ic::Array{T,3}) 
+function fdtd(xs::Vector{Tuple{Int,Int,Int}}, Nt::Int, 
+ 	 f::FDTD{T,3}, s::Array{T}, 
+ 	 p0ic::Array{T,3}, p1ic::Array{T,3}) where T 
 	size(s,2) != length(xs) && throw(ArgumentError("size(s,2) must be equal to length(xs)")) 
 
 	#initialize output
@@ -266,10 +266,10 @@ function fdtd{T}(xs::Vector{Tuple{Int,Int,Int}}, Nt::Int,
 	return p_out
 end
 
-function fdtd!{T}(p_out::Array{T,4},
-		  xs::Vector{Tuple{Int,Int,Int}},Nt::Int,
-		  f::FDTD{T,3}, s::Array{T}, 
-		  p0ic::Array{T,3}, p1ic::Array{T,3}) 
+function fdtd!(p_out::Array{T,4},
+ 	  xs::Vector{Tuple{Int,Int,Int}},Nt::Int,
+ 	  f::FDTD{T,3}, s::Array{T}, 
+ 	  p0ic::Array{T,3}, p1ic::Array{T,3}) where T 
 	setIC!(f,p0ic,p1ic)
 	p2 = f.p2
 	p1 = f.p1
@@ -282,17 +282,17 @@ function fdtd!{T}(p_out::Array{T,4},
 end
 
 ## xr with source everywhere, & IC 
-function fdtd{T}(xr::Vector{Tuple{Int,Int,Int}},Nt::Int,
-		 geo::AbstractGeometry,
-		 s::Array{T,4}, 
-		 p0ic::Array{T,3}, p1ic::Array{T,3}) 
+function fdtd(xr::Vector{Tuple{Int,Int,Int}},Nt::Int,
+ 	 geo::AbstractGeometry,
+ 	 s::Array{T,4}, 
+ 	 p0ic::Array{T,3}, p1ic::Array{T,3}) where T 
 	f = FDTD(eltype(s),geo) 
 	return fdtd(xr,Nt,f,s,p0ic,p1ic)
 end
 
-function fdtd{T}(xr::Vector{Tuple{Int,Int,Int}},Nt::Int, 
-		 f::FDTD{T,3}, s::Array{T,4},
-		 p0ic::Array{T,3}, p1ic::Array{T,3}) 
+function fdtd(xr::Vector{Tuple{Int,Int,Int}},Nt::Int, 
+ 	 f::FDTD{T,3}, s::Array{T,4},
+ 	 p0ic::Array{T,3}, p1ic::Array{T,3}) where T 
 
 	#initialize output
 	p_out = Array{T}(Nt,length(xr))
@@ -300,10 +300,10 @@ function fdtd{T}(xr::Vector{Tuple{Int,Int,Int}},Nt::Int,
 	return p_out
 end
 
-function fdtd!{T}(p_out::Array{T},
-		  xr::Vector{Tuple{Int,Int,Int}}, Nt::Int,
-		  f::FDTD{T,3}, s::Array{T,4}, 
-		  p0ic::Array{T,3}, p1ic::Array{T,3}) 
+function fdtd!(p_out::Array{T},
+ 	  xr::Vector{Tuple{Int,Int,Int}}, Nt::Int,
+ 	  f::FDTD{T,3}, s::Array{T,4}, 
+ 	  p0ic::Array{T,3}, p1ic::Array{T,3}) where T 
 	setIC!(f,p0ic,p1ic)
 	p2 = f.p2
 	p1 = f.p1
@@ -317,17 +317,17 @@ end
 
 
 ## full with source everywhere, & IC 
-function fdtd{T}(Nt::Int,
-		 geo::AbstractGeometry,
-		 s::Array{T,4},
-		 p0ic::Array{T,3}, p1ic::Array{T,3}) 
+function fdtd(Nt::Int,
+ 	 geo::AbstractGeometry,
+ 	 s::Array{T,4},
+ 	 p0ic::Array{T,3}, p1ic::Array{T,3}) where T 
 	f = FDTD(eltype(s),geo) 
 	return fdtd(Nt,f,s,p0ic,p1ic)
 end
 
-function fdtd{T}(Nt::Int, 
-		 f::FDTD{T,3}, s::Array{T,4},
-		 p0ic::Array{T,3}, p1ic::Array{T,3}) 
+function fdtd(Nt::Int, 
+ 	 f::FDTD{T,3}, s::Array{T,4},
+ 	 p0ic::Array{T,3}, p1ic::Array{T,3}) where T 
 
 	#initialize output
 	p_out = Array{T}(size(f.p0)...,Nt)
@@ -335,10 +335,10 @@ function fdtd{T}(Nt::Int,
 	return p_out
 end
 
-function fdtd!{T}(p_out::Array{T,4},
-		  Nt::Int,
-		  f::FDTD{T,3}, s::Array{T,4}, 
-		  p0ic::Array{T,3}, p1ic::Array{T,3}) 
+function fdtd!(p_out::Array{T,4},
+ 	  Nt::Int,
+ 	  f::FDTD{T,3}, s::Array{T,4}, 
+ 	  p0ic::Array{T,3}, p1ic::Array{T,3}) where T 
 	setIC!(f,p0ic,p1ic)
 	p2 = f.p2
 	p1 = f.p1
@@ -356,9 +356,9 @@ end
 ##walls
 include("kernels.jl")
 
-function air!{T,N}(l::Int,m::Int,i::Int,
-		   d1::T,d2::T,d3::T,d4::T,
-		   p0::Array{T,N},p1::Array{T,N},p2::Array{T,N})
+function air!(l::Int,m::Int,i::Int,
+      d1::T,d2::T,d3::T,d4::T,
+      p0::Array{T,N},p1::Array{T,N},p2::Array{T,N}) where {T,N}
 	sum1,sum2,sum3,sum4 = 0.,0.,0.,0.
 	if d1 != 0.
 		sum1 += p1[l+1,m,i]
@@ -403,9 +403,9 @@ end
 
 ##adding source
 
-function air!{T,N}(n::Int,l::Int,m::Int,i::Int,
-		   d1::T,d2::T,d3::T,d4::T,
-		   p0::Array{T,N},p1::Array{T,N},p2::Array{T,N},s::Array{T,4})
+function air!(n::Int,l::Int,m::Int,i::Int,
+      d1::T,d2::T,d3::T,d4::T,
+      p0::Array{T,N},p1::Array{T,N},p2::Array{T,N},s::Array{T,4}) where {T,N}
 	sum1,sum2,sum3,sum4 = 0.,0.,0.,0.
 	if d1 != 0.
 		sum1 += p1[l+1,m,i]

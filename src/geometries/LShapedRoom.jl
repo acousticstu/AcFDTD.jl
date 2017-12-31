@@ -13,7 +13,7 @@ Returns a `LShapedRoom` object containing the geometrical information of the roo
   * `xedge` and `yedge` indicates the position of the edges, can also be expressed in samples
 
 """
-immutable LShapedRoom <: AbstractGeometry
+struct LShapedRoom <: AbstractGeometry
 	Lx::Float64   #x dimension
 	Ly::Float64   #y dimension
 	Lz::Float64   #z dimension

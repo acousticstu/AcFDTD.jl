@@ -1,4 +1,4 @@
-abstract AbstractGeometry   
+abstract type AbstractGeometry end   
 
 import Base: size
 
