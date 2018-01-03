@@ -12,7 +12,7 @@ using DSP
 #instead of a spatial sampling:
 #```julia
 
-Fs = 20000.                          # sampling frequency in Hz
+Fs = 2000.                          # sampling frequency in Hz
 env = FDTDEnv(IISO(),Fs; c = 343)   # create new acoustic env with default values
 
 #```
