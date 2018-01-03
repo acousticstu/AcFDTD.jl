@@ -1,16 +1,16 @@
 export fdtdAdj, fdtdAdj!
 
 #xr and xs, no IC
-function fdtdAdj{T,N}(xr::Vector{Tuple{Int,Int,Int}}, xs::Vector{Tuple{Int,Int,Int}}, Nt::Int,
-		      f::FDTD{T,N},
-		      p::Array{T})
+function fdtdAdj(xr::Vector{Tuple{Int,Int,Int}}, xs::Vector{Tuple{Int,Int,Int}}, Nt::Int,
+         f::FDTD{T,N},
+         p::Array{T}) where {T,N}
 	s = fdtd(xs,xr,Nt,f,flipdim(p,1))
 	return flipdim(s,1)
 end
 
-function fdtdAdj!{T}(s_out::Array{T},
-		     xr::Vector{Tuple{Int,Int,Int}}, xs::Vector{Tuple{Int,Int,Int}},Nt::Int,
-		     f::FDTD{T,3}, p::Array{T}) 
+function fdtdAdj!(s_out::Array{T},
+ 	     xr::Vector{Tuple{Int,Int,Int}}, xs::Vector{Tuple{Int,Int,Int}},Nt::Int,
+ 	     f::FDTD{T,3}, p::Array{T}) where T 
 	resetIC!(f)
 	p2 = f.p2
 	p1 = f.p1
@@ -23,16 +23,16 @@ function fdtdAdj!{T}(s_out::Array{T},
 end
 
 #full and xs, no IC
-function fdtdAdj{T,N}(xs::Vector{Tuple{Int,Int,Int}}, Nt::Int,
-		      f::FDTD{T,N},
-		      p::Array{T,4})
+function fdtdAdj(xs::Vector{Tuple{Int,Int,Int}}, Nt::Int,
+         f::FDTD{T,N},
+         p::Array{T,4}) where {T,N}
 	s = fdtd(xs,Nt,f,flipdim(p,4))
 	return flipdim(s,1)
 end
 
-function fdtdAdj!{T}(s_out::Array{T},
-		     xs::Vector{Tuple{Int,Int,Int}},Nt::Int,
-		     f::FDTD{T,3}, p::Array{T,4}) 
+function fdtdAdj!(s_out::Array{T},
+ 	     xs::Vector{Tuple{Int,Int,Int}},Nt::Int,
+ 	     f::FDTD{T,3}, p::Array{T,4}) where T 
 	resetIC!(f)
 	p2 = f.p2
 	p1 = f.p1
@@ -45,16 +45,16 @@ function fdtdAdj!{T}(s_out::Array{T},
 end
 
 #full and source everywhere, no IC
-function fdtdAdj{T,N}(Nt::Int,
-		      f::FDTD{T,N},
-		      p::Array{T,4})
+function fdtdAdj(Nt::Int,
+         f::FDTD{T,N},
+         p::Array{T,4}) where {T,N}
 	s = fdtd(Nt,f,flipdim(p,4))
 	return flipdim(s,4)
 end
 
-function fdtdAdj!{T}(s_out::Array{T,4},
-		     Nt::Int,
-		     f::FDTD{T,3}, p::Array{T,4}) 
+function fdtdAdj!(s_out::Array{T,4},
+ 	     Nt::Int,
+ 	     f::FDTD{T,3}, p::Array{T,4}) where T 
 	resetIC!(f)
 	p2 = f.p2
 	p1 = f.p1

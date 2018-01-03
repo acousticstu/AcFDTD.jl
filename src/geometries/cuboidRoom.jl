@@ -12,7 +12,7 @@ Returns a `CuboidRoom` object containing the geometrical information of the room
   * `ξ::Array{Float64}`: must be 6 element Array containg acoustic impedance of the 6 walls
 
 """
-immutable CuboidRoom <: AbstractGeometry
+struct CuboidRoom <: AbstractGeometry
 	Lx::Float64   #x dimension
 	Ly::Float64   #y dimension
 	Lz::Float64   #z dimension

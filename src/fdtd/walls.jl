@@ -1,6 +1,6 @@
-function l1!{T,N}(l::Int,m::Int,i::Int,
-		   d1::T,d2::T,d3::T,d4::T,
-		   p0::Array{T,N},p1::Array{T,N},p2::Array{T,N},q::Vector{T})
+function l1!(l::Int,m::Int,i::Int,
+      d1::T,d2::T,d3::T,d4::T,
+      p0::Array{T,N},p1::Array{T,N},p2::Array{T,N},q::Vector{T}) where {T,N}
 	sum1,sum2,sum3,sum4 = 0.,0.,0.,0.
 	if d1 != 0.
 		sum1 += p1[l+1,m,i]
@@ -47,9 +47,9 @@ function l1!{T,N}(l::Int,m::Int,i::Int,
 	p2[l,m,i] /= (q[1]+1.0)
 end
 
-function le!{T,N}(l::Int,m::Int,i::Int,
-		   d1::T,d2::T,d3::T,d4::T,
-		   p0::Array{T,N},p1::Array{T,N},p2::Array{T,N},q::Vector{T})
+function le!(l::Int,m::Int,i::Int,
+      d1::T,d2::T,d3::T,d4::T,
+      p0::Array{T,N},p1::Array{T,N},p2::Array{T,N},q::Vector{T}) where {T,N}
 	sum1,sum2,sum3,sum4 = 0.,0.,0.,0.
 	if d1 != 0.
 		sum1 += p1[l-1,m,i]
@@ -96,9 +96,9 @@ function le!{T,N}(l::Int,m::Int,i::Int,
 	p2[l,m,i] /= (q[2]+1.0)
 end
 
-function m1!{T,N}(l::Int,m::Int,i::Int,
-		   d1::T,d2::T,d3::T,d4::T,
-		   p0::Array{T,N},p1::Array{T,N},p2::Array{T,N},q::Vector{T})
+function m1!(l::Int,m::Int,i::Int,
+      d1::T,d2::T,d3::T,d4::T,
+      p0::Array{T,N},p1::Array{T,N},p2::Array{T,N},q::Vector{T}) where {T,N}
 	sum1,sum2,sum3,sum4 = 0.,0.,0.,0.
 	if d1 != 0.
 		sum1 += p1[l+1,m,i]
@@ -145,9 +145,9 @@ function m1!{T,N}(l::Int,m::Int,i::Int,
 	p2[l,m,i] /= (q[3]+1.0)
 end
 
-function me!{T,N}(l::Int,m::Int,i::Int,
-		   d1::T,d2::T,d3::T,d4::T,
-		   p0::Array{T,N},p1::Array{T,N},p2::Array{T,N},q::Vector{T})
+function me!(l::Int,m::Int,i::Int,
+      d1::T,d2::T,d3::T,d4::T,
+      p0::Array{T,N},p1::Array{T,N},p2::Array{T,N},q::Vector{T}) where {T,N}
 	sum1,sum2,sum3,sum4 = 0.,0.,0.,0.
 	if d1 != 0.
 		sum1 += p1[l+1,m,i]
@@ -194,9 +194,9 @@ function me!{T,N}(l::Int,m::Int,i::Int,
 	p2[l,m,i] /= (q[4]+1.0)
 end
 
-function i1!{T,N}(l::Int,m::Int,i::Int,
-		   d1::T,d2::T,d3::T,d4::T,
-		   p0::Array{T,N},p1::Array{T,N},p2::Array{T,N},q::Vector{T})
+function i1!(l::Int,m::Int,i::Int,
+      d1::T,d2::T,d3::T,d4::T,
+      p0::Array{T,N},p1::Array{T,N},p2::Array{T,N},q::Vector{T}) where {T,N}
 	sum1,sum2,sum3,sum4 = 0.,0.,0.,0.
 	if d1 != 0.
 		sum1 += p1[l+1,m,i]
@@ -245,9 +245,9 @@ function i1!{T,N}(l::Int,m::Int,i::Int,
 end
 
 
-function ie!{T,N}(l::Int,m::Int,i::Int,
-		   d1::T,d2::T,d3::T,d4::T,
-		   p0::Array{T,N},p1::Array{T,N},p2::Array{T,N},q::Vector{T})
+function ie!(l::Int,m::Int,i::Int,
+      d1::T,d2::T,d3::T,d4::T,
+      p0::Array{T,N},p1::Array{T,N},p2::Array{T,N},q::Vector{T}) where {T,N}
 	sum1,sum2,sum3,sum4 = 0.,0.,0.,0.
 	if d1 != 0.
 		sum1 += p1[l+1,m,i]
@@ -308,9 +308,9 @@ end
 
 
 #adding source
-function l1!{T,N}(n::Int, l::Int,m::Int,i::Int,
-		   d1::T,d2::T,d3::T,d4::T,
-		   p0::Array{T,N},p1::Array{T,N},p2::Array{T,N},q::Vector{T},s::Array{T,4})
+function l1!(n::Int, l::Int,m::Int,i::Int,
+      d1::T,d2::T,d3::T,d4::T,
+      p0::Array{T,N},p1::Array{T,N},p2::Array{T,N},q::Vector{T},s::Array{T,4}) where {T,N}
 	sum1,sum2,sum3,sum4 = 0.,0.,0.,0.
 	if d1 != 0.
 		sum1 += p1[l+1,m,i]
@@ -357,9 +357,9 @@ function l1!{T,N}(n::Int, l::Int,m::Int,i::Int,
 	p2[l,m,i] /= (q[1]+1.0)
 end
 
-function le!{T,N}(n::Int, l::Int,m::Int,i::Int,
-		   d1::T,d2::T,d3::T,d4::T,
-		   p0::Array{T,N},p1::Array{T,N},p2::Array{T,N},q::Vector{T},s::Array{T,4})
+function le!(n::Int, l::Int,m::Int,i::Int,
+      d1::T,d2::T,d3::T,d4::T,
+      p0::Array{T,N},p1::Array{T,N},p2::Array{T,N},q::Vector{T},s::Array{T,4}) where {T,N}
 	sum1,sum2,sum3,sum4 = 0.,0.,0.,0.
 	if d1 != 0.
 		sum1 += p1[l-1,m,i]
@@ -406,9 +406,9 @@ function le!{T,N}(n::Int, l::Int,m::Int,i::Int,
 	p2[l,m,i] /= (q[2]+1.0)
 end
 
-function m1!{T,N}(n::Int, l::Int,m::Int,i::Int,
-		   d1::T,d2::T,d3::T,d4::T,
-		   p0::Array{T,N},p1::Array{T,N},p2::Array{T,N},q::Vector{T},s::Array{T,4})
+function m1!(n::Int, l::Int,m::Int,i::Int,
+      d1::T,d2::T,d3::T,d4::T,
+      p0::Array{T,N},p1::Array{T,N},p2::Array{T,N},q::Vector{T},s::Array{T,4}) where {T,N}
 	sum1,sum2,sum3,sum4 = 0.,0.,0.,0.
 	if d1 != 0.
 		sum1 += p1[l+1,m,i]
@@ -455,9 +455,9 @@ function m1!{T,N}(n::Int, l::Int,m::Int,i::Int,
 	p2[l,m,i] /= (q[3]+1.0)
 end
 
-function me!{T,N}(n::Int, l::Int,m::Int,i::Int,
-		   d1::T,d2::T,d3::T,d4::T,
-		   p0::Array{T,N},p1::Array{T,N},p2::Array{T,N},q::Vector{T},s::Array{T,4})
+function me!(n::Int, l::Int,m::Int,i::Int,
+      d1::T,d2::T,d3::T,d4::T,
+      p0::Array{T,N},p1::Array{T,N},p2::Array{T,N},q::Vector{T},s::Array{T,4}) where {T,N}
 	sum1,sum2,sum3,sum4 = 0.,0.,0.,0.
 	if d1 != 0.
 		sum1 += p1[l+1,m,i]
@@ -504,9 +504,9 @@ function me!{T,N}(n::Int, l::Int,m::Int,i::Int,
 	p2[l,m,i] /= (q[4]+1.0)
 end
 
-function i1!{T,N}(n::Int, l::Int,m::Int,i::Int,
-		   d1::T,d2::T,d3::T,d4::T,
-		   p0::Array{T,N},p1::Array{T,N},p2::Array{T,N},q::Vector{T},s::Array{T,4})
+function i1!(n::Int, l::Int,m::Int,i::Int,
+      d1::T,d2::T,d3::T,d4::T,
+      p0::Array{T,N},p1::Array{T,N},p2::Array{T,N},q::Vector{T},s::Array{T,4}) where {T,N}
 	sum1,sum2,sum3,sum4 = 0.,0.,0.,0.
 	if d1 != 0.
 		sum1 += p1[l+1,m,i]
@@ -555,9 +555,9 @@ function i1!{T,N}(n::Int, l::Int,m::Int,i::Int,
 end
 
 
-function ie!{T,N}(n::Int, l::Int,m::Int,i::Int,
-		   d1::T,d2::T,d3::T,d4::T,
-		   p0::Array{T,N},p1::Array{T,N},p2::Array{T,N},q::Vector{T},s::Array{T,4})
+function ie!(n::Int, l::Int,m::Int,i::Int,
+      d1::T,d2::T,d3::T,d4::T,
+      p0::Array{T,N},p1::Array{T,N},p2::Array{T,N},q::Vector{T},s::Array{T,4}) where {T,N}
 	sum1,sum2,sum3,sum4 = 0.,0.,0.,0.
 	if d1 != 0.
 		sum1 += p1[l+1,m,i]
